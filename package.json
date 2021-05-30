@@ -1,0 +1,33 @@
+{
+  "name": "pixelarium",
+  "version": "1.0.0",
+  "description": "pixelize images",
+  "main": "./src/start.ts",
+  "repository": "git@github.com:Kana00/pixelarium.git",
+  "author": "illya Delsarte <illya.delsarte@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon --config nodemon.json src/index.ts"
+  },
+  "dependencies": {
+    "minimist": "^1.2.5",
+    "nodemon": "^2.0.7",
+    "typescript": "^4.2.4",
+    "canvas": "^2.7.0"
+  },
+  "devDependencies": {
+    "ts-node": "^9.1.1",
+    "@types/minimist": "^1.2.1",
+    "@types/node": "^12.0.8",
+    "@typescript-eslint/eslint-plugin": "^4.24.0",
+    "@typescript-eslint/parser": "^4.24.0",
+    "eslint": "^7.26.0",
+    "eslint-config-airbnb-typescript": "^12.3.1",
+    "eslint-config-react": "^1.1.7",
+    "eslint-config-react-app": "^6.0.0",
+    "eslint-import-resolver-typescript": "^2.4.0",
+    "eslint-loader": "^4.0.2",
+    "eslint-plugin-react": "^7.23.2",
+    "eslint-plugin-react-hooks": "^4.2.0"
+  }
+}
