@@ -1,12 +1,16 @@
-import { createCanvas } from 'canvas';
-import fs from 'fs';
-const WIDTH = 1000;
-const HEIGHT = 800;
-const out = fs.createWriteStream(__dirname + '/graphique.png');
-const canvas = createCanvas(WIDTH, HEIGHT);
-const ctx = canvas.getContext('2d');
+//      _           __           _
+//      ____  (_)  _____  / /___ ______(_)_  ______ ___
+//     / __ \/ / |/_/ _ \/ / __ `/ ___/ / / / / __ `__ \
+//    / /_/ / />  </  __/ / /_/ / /  / / /_/ / / / / / /
+//   / .___/_/_/|_|\___/_/\__,_/_/  /_/\__,_/_/ /_/ /_/
+//  /_/
 
-ctx.rect(0, 0, 10, 10);
+import { Pixelization } from './Pixelization';
 
-const stream = canvas.createPNGStream();
-stream.pipe(out);
+
+const reducer = new Pixelization({
+  sourceImagePath: './rose.jpg',
+  maxWidth: 1000
+});
+
+reducer.reduceImage();

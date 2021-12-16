@@ -11,7 +11,9 @@
     "release": "npx semantic-release"
   },
   "dependencies": {
-    "canvas": "^2.7.0",
+    "@types/color": "^3.0.2",
+    "canvas": "github:Automattic/node-canvas#198080580a0e3938c48daae357b88a1638a9ddcd",
+    "color": "^4.1.0",
     "minimist": "^1.2.5",
     "nodemon": "^2.0.7",
     "semantic-release": "^17.4.3",
