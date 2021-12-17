@@ -3,14 +3,47 @@
 </div>
 
 # Description
+<div style="display: flex">
+  <div style="width: 50%; margin: 2rem auto;">
+    <img src="./assets/images/rose.jpg"/>
+    <div style="text-align: center; font-size: 8pt">
+      <em>Original file</em>
+    </div>
+  </div>
 
-By typing the command in your terminal, you can pixelize any `jpeg/png` image.
+  <div style="width: 50%; margin: 2rem auto;">
+    <img src="./assets/images/output.png"/>
+    <div style="text-align: center; font-size: 8pt">
+      <em>After treatment</em>
+    </div>
+  </div>
+</div>
+
+This project allows you to style an image by replacing several pixels with a smaller number.
+
+The pixels have 2 possible shapes :
+- square
+- dots
+
+You also have video functionality with the `renderVideo` method.
+
+## Installation
 
 ```sh
+> brew install ffmpeg
 > brew install pkg-config cairo pango libpng jpeg giflib librsvg
 > sudo npm install -g node-gyp
+> npm install
 ```
 
+## Examples
+
+```typescript
+import { Pixelize } from './Pixelize';
+
+Pixelize.minimize('./rose.jpg', './output.png', 100, { shape: 'dots' });
+Pixelize.renderVideo('./rose.jpg', './output.mp4', 20, 100, 60, { shape: 'dots' });
+```
 
 # License
 

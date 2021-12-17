@@ -7,5 +7,5 @@
 
 import { Pixelize } from './Pixelize';
 
-// Pixelize.minimize('./rose.jpg', './output.png', 100, { shape: 'dots' });
-Pixelize.renderVideo('./rose.jpg', './output.mp4', 20, 100, 60, { shape: 'dots' });
+Pixelize.minimize('./rose.jpg', './output.png', 100, { shape: 'dots' });
+// Pixelize.renderVideo('./rose.jpg', './output.mp4', 20, 100, 60, { shape: 'dots' });
