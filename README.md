@@ -4,18 +4,8 @@
 
 # Description
 <div style="display: flex">
-  <div style="width: 50%; margin: 2rem auto;">
-    <img src="./assets/images/rose.jpg"/>
-    <div style="text-align: center; font-size: 8pt">
-      <em>Original file</em>
-    </div>
-  </div>
-
-  <div style="width: 50%; margin: 2rem auto;">
-    <img src="./assets/images/output.png"/>
-    <div style="text-align: center; font-size: 8pt">
-      <em>After treatment</em>
-    </div>
+  <div style="width: 100%; margin: 2rem auto;">
+    <img src="./assets/images/preview.png"/>
   </div>
 </div>
 
