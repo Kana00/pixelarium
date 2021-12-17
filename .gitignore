@@ -109,3 +109,5 @@ TODO.md
 src/**/*.png
 src/**/*.mp4
 src/**/*.jpeg
+build
+config.gypi
