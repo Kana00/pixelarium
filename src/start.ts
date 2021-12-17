@@ -5,19 +5,7 @@
 //   / .___/_/_/|_|\___/_/\__,_/_/  /_/\__,_/_/ /_/ /_/
 //  /_/
 
-import { Pixelization } from './Pixelization';
+import { Pixelize } from './Pixelize';
 
-
-const reducer = new Pixelization({
-  sourceImagePath: './rose.jpg',
-  widthDivision: 60,
-  showGrid: true
-});
-
-reducer.reduceImage();
-
-// TODO
-// - create some pixel form (circle, square)
-// - create a color palette where the color must be approximation
-// - create a vidéo frame per frame with different settings
-// - create a console commande
+// Pixelize.minimize('./rose.jpg', './output.png', 100, { shape: 'dots' });
+Pixelize.renderVideo('./rose.jpg', './output.mp4', 20, 100, 60, { shape: 'dots' });
