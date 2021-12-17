@@ -10,7 +10,14 @@ import { Pixelization } from './Pixelization';
 
 const reducer = new Pixelization({
   sourceImagePath: './rose.jpg',
-  maxWidth: 1000
+  widthDivision: 60,
+  showGrid: true
 });
 
 reducer.reduceImage();
+
+// TODO
+// - create some pixel form (circle, square)
+// - create a color palette where the color must be approximation
+// - create a vidéo frame per frame with different settings
+// - create a console commande
