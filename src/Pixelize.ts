@@ -202,7 +202,5 @@ export class Pixelize {
       });
 
     }
-
-    // execSync(`ffmpeg -y -r 24 -start_number ${minDivision} -i ${__dirname}/animation/frame-%04d.png -vcodec libx264 -crf 25 -pix_fmt yuv420p ${outputFiltPath}`);
   }
 }
