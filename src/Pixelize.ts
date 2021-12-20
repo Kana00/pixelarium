@@ -3,14 +3,29 @@ import fs from 'fs';
 import Color from 'color';
 const execSync = require('child_process').execSync;
 
+/**
+ * Must be in the format #RRGGBB or #RRGGBBAA
+ */
+export type CSSHex = Array<string>;
+
+type RGBA = Array<[number, number, number, number]>;
+
 export interface PixelizeOptions {
   shape?: 'square' | 'dots';
+  colorPallet?: CSSHex;
 }
 
 export class Pixelize {
   static defaultOptions: PixelizeOptions = {
     shape: 'square'
   };
+
+  private static transformeCoulourPalette(colors: CSSHex): RGBA {
+    return colors.map((color) => {
+      const translatedColor = Color(color);
+      return [translatedColor.red(), translatedColor.green(), translatedColor.blue(), translatedColor.alpha()];
+    });
+  }
 
   private static getAverageChunkColor(ctx: CanvasRenderingContext2D, x1: number, y1: number, x2: number, y2: number): string {
     const pixelData = ctx.getImageData(x1, y1, x2 - x1, y2 - y1);
@@ -39,20 +54,51 @@ export class Pixelize {
     return color.hex();
   }
 
-  private static async drawRect(ctx: CanvasRenderingContext2D, ctxReference: CanvasRenderingContext2D, verticalDivision: number, pixelPerDivision: number) {
+  private static getClosestColor(ctx: CanvasRenderingContext2D, x1: number, y1: number, x2: number, y2: number, colorPalette: RGBA): string {
+    const aColor = Color(Pixelize.getAverageChunkColor(ctx, x1, y1, x2, y2));
+    const averageColor = [aColor.red(), aColor.green(), aColor.blue(), aColor.alpha()];
+    const test = colorPalette.map((colorTester) => {
+      const R1 = averageColor[0];
+      const G1 = averageColor[1];
+      const B1 = averageColor[2];
+      const A1 = averageColor[3];
+
+      const R2 = colorTester[0];
+      const G2 = colorTester[1];
+      const B2 = colorTester[2];
+      const A2 = colorTester[3];
+      return Math.sqrt(Math.pow((R1 - R2),2) + Math.pow((G1 - G2),2) + Math.pow((B1 - B2),2) + Math.pow((A1 - A2),2));
+    });
+    const indexGoodColor = test.indexOf(Math.min(...test));
+    return Color(colorPalette[indexGoodColor]).hex();
+  }
+
+  private static async drawRects(ctx: CanvasRenderingContext2D, ctxReference: CanvasRenderingContext2D, verticalDivision: number, pixelPerDivision: number, colorPalette: CSSHex | undefined) {
+    let colors: RGBA = [];
+    if (colorPalette !== undefined) {
+      colors = Pixelize.transformeCoulourPalette(colorPalette);
+    }
     for (let rowIndex = 0; rowIndex < verticalDivision; rowIndex++) {
       for (let columnIndex = 0; columnIndex < verticalDivision; columnIndex++) {
         const x1 = columnIndex * pixelPerDivision;
         const x2 = (columnIndex + 1) * pixelPerDivision;
         const y1 = rowIndex * pixelPerDivision;
         const y2 = (rowIndex + 1) * pixelPerDivision;
-        ctx.fillStyle = Pixelize.getAverageChunkColor(ctxReference, x1, y1, x2, y2);
+        if (colorPalette === undefined) {
+          ctx.fillStyle = Pixelize.getAverageChunkColor(ctxReference, x1, y1, x2, y2);
+        } else {
+          ctx.fillStyle = Pixelize.getClosestColor(ctxReference, x1, y1, x2, y2, colors);
+        }
         ctx.fillRect(x1, y1, pixelPerDivision + 1, pixelPerDivision + 1);
       }
     }
   }
 
-  private static async drawDots(ctx: CanvasRenderingContext2D, ctxReference: CanvasRenderingContext2D, verticalDivision: number, pixelPerDivision: number) {
+  private static async drawDots(ctx: CanvasRenderingContext2D, ctxReference: CanvasRenderingContext2D, verticalDivision: number, pixelPerDivision: number, colorPalette: CSSHex | undefined) {
+    let colors: RGBA = [];
+    if (colorPalette !== undefined) {
+      colors = Pixelize.transformeCoulourPalette(colorPalette);
+    }
     const radius = pixelPerDivision / 2;
     const offset = pixelPerDivision / 2;
     for (let rowIndex = 0; rowIndex < verticalDivision; rowIndex++) {
@@ -61,7 +107,11 @@ export class Pixelize {
         const x2 = (columnIndex + 1) * pixelPerDivision;
         const y1 = rowIndex * pixelPerDivision;
         const y2 = (rowIndex + 1) * pixelPerDivision;
-        ctx.fillStyle = this.getAverageChunkColor(ctxReference, x1, y1, x2, y2);
+        if (colorPalette === undefined) {
+          ctx.fillStyle = Pixelize.getAverageChunkColor(ctxReference, x1, y1, x2, y2);
+        } else {
+          ctx.fillStyle = Pixelize.getClosestColor(ctxReference, x1, y1, x2, y2, colors);
+        }
         ctx.beginPath();
         ctx.arc(offset + x1, offset + y1, radius, 0, 2 * Math.PI);
         ctx.fill();
@@ -85,15 +135,15 @@ export class Pixelize {
 
     switch (options.shape) {
       case 'square': {
-        Pixelize.drawRect(ctx, ctxReference, verticalDivision, pixelPerDivision);
+        Pixelize.drawRects(ctx, ctxReference, verticalDivision, pixelPerDivision, options.colorPallet);
         break;
       }
       case 'dots': {
-        Pixelize.drawDots(ctx, ctxReference, verticalDivision, pixelPerDivision);
+        Pixelize.drawDots(ctx, ctxReference, verticalDivision, pixelPerDivision, options.colorPallet);
         break;
       }
       default:
-        Pixelize.drawRect(ctx, ctxReference, verticalDivision, pixelPerDivision);
+        Pixelize.drawRects(ctx, ctxReference, verticalDivision, pixelPerDivision, options.colorPallet);
         break;
     }
 
@@ -129,15 +179,15 @@ export class Pixelize {
 
       switch (options.shape) {
         case 'square': {
-          Pixelize.drawRect(ctx, ctxReference, currentVerticalDivision, pixelPerDivision);
+          Pixelize.drawRects(ctx, ctxReference, currentVerticalDivision, pixelPerDivision, options.colorPallet);
           break;
         }
         case 'dots': {
-          Pixelize.drawDots(ctx, ctxReference, currentVerticalDivision, pixelPerDivision);
+          Pixelize.drawDots(ctx, ctxReference, currentVerticalDivision, pixelPerDivision, options.colorPallet);
           break;
         }
         default:
-          Pixelize.drawRect(ctx, ctxReference, currentVerticalDivision, pixelPerDivision);
+          Pixelize.drawRects(ctx, ctxReference, currentVerticalDivision, pixelPerDivision, options.colorPallet);
           break;
       }
       const outputStreamFile = fs.createWriteStream(`${__dirname}/animation/frame-${zeroPad(currentVerticalDivision, 4)}.png`);
