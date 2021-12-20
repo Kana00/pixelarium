@@ -1,7 +1,7 @@
 ![header](./assets/images/pixelarium_t.jpg)
 
 # Description
-<div style="display: flex">
+<div align="center" style="display: flex">
   <div style="width: 100%; margin: 2rem auto;">
     <img src="./assets/images/preview.png"/>
   </div>
