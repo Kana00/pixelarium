@@ -1,6 +1,4 @@
-<div style="width: 70%; margin: auto;">
-  <img src="./assets/images/pixelarium_t.jpg"/>
-</div>
+![header](./assets/images/pixelarium_t.jpg)
 
 # Description
 <div style="display: flex">
@@ -9,9 +7,17 @@
   </div>
 </div>
 
+<p align="center" style="width: 30%; margin: 2rem auto;">
+  <img src="./assets/images/demo_color_palette.png"/>
+</p>
+
 This project allows you to style an image by replacing several pixels with a smaller number.
 
-The pixels have 2 possible shapes :
+## Features
+
+You can use a color palette.
+
+The pixels have 2 possible of shapes :
 - square
 - dots
 
